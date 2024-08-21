@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import semver from 'semver';
-
 import fs from 'fs';
 import path from 'path';
 
