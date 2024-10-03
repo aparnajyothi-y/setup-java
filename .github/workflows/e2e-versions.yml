@@ -298,7 +298,7 @@ jobs:
         # x86 is not supported on macOS
         os: [windows-latest, ubuntu-24.04]
         distribution: ['liberica', 'zulu', 'corretto']
-        version: 11
+        version: 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
