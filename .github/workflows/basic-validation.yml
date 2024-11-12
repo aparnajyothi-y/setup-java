@@ -18,3 +18,4 @@ jobs:
     uses: aparnajyothi-y/reusable-workflows/.github/workflows/basic-validation.yml@rate-limit-java
     with:
       node-version: '20.x'
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
