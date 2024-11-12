@@ -1,4 +1,4 @@
-name: Basic validation test
+name: Basic validation
 
 on:
   push:
