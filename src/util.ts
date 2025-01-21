@@ -134,6 +134,7 @@ export function getVersionFromFileContent(
   if (versionFileName == '.tool-versions') {
     javaVersionRegExp =
     /^(java\s+)(?<distribution>\S+)-(?<version>\d+\.\d+\.\d+)(\+\d+\.\d+)?(\.LTS)?$/m;
+
   } else {
     javaVersionRegExp = /(?<version>(?<=(^|\s|-))(\d+\S*))(\s|$)/;
   }
