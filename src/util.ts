@@ -133,7 +133,7 @@ export function getVersionFromFileContent(
   const versionFileName = getFileName(versionFile);
   if (versionFileName == '.tool-versions') {
     javaVersionRegExp =
-/^(java\s+)(?<distribution>\S+)-(?<version>\d+\.\d+\.\d+(\.\d+)?)(\+\d+(\.\d+)?)?(\.LTS)?$/m;
+/^(java\s+)(?<distribution>\S+-)?(?<version>\d+(\.\d+){1,2}(\+\d+(\.\d+)*)?(-ea(\.\d+)?)?(\.LTS)?)$/m;
   } else {
     javaVersionRegExp = /(?<version>(?<=(^|\s|-))(\d+\S*))(\s|$)/;
   }
