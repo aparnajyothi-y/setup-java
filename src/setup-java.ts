@@ -54,7 +54,7 @@ async function run() {
         'java-version input is empty, looking for java-version-file input'
       );
       const content = fs.readFileSync(versionFile).toString().trim();
-
+      core.debug(`File content: '${content}'`);
       const version = getVersionFromFileContent(
         content,
         distributionName,
