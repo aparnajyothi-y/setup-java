@@ -94229,7 +94229,7 @@ function getVersionFromFileContent(content, distributionName, versionFile) {
     const versionFileName = getFileName(versionFile);
     if (versionFileName == '.tool-versions') {
         javaVersionRegExp =
-            /^java\s+(?:\S*-)?(?<version>\d+(?:\.\d+)*([-_.](?:ea|LTS|beta|snapshot|internal|b\d+|\d+[a-z]*)[\.\d]*)?(?:\+\d+(?:\.\d+)*)?)$/im;
+            /^java\s+(?:\S*-)?(?<version>\d+(?:\.\d+)*(?:[-_.](?:ea|LTS|beta|snapshot|internal|b\d+|\d+[a-z]*))?(?:\+\d+(?:\.\d+)*[-_.]?(?:ea|LTS|beta|snapshot|internal|b\d+|\d+[a-z]*)?)?)$/im;
     }
     else {
         javaVersionRegExp = /(?<version>(?<=(^|\s|-))(\d+\S*))(\s|$)/;
