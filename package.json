@@ -4,7 +4,7 @@
   "private": true,
   "description": "setup java action",
   "main": "dist/setup/index.js",
-   "engines": {
+  "engines": {
     "node": ">=24.0.0"
   },
   "scripts": {
@@ -55,6 +55,9 @@
     "prettier": "^2.8.4",
     "ts-jest": "^29.3.0",
     "typescript": "^5.3.3"
+  },
+  "overrides": {
+    "uri-js": "npm:uri-js-replace@^1.0.1"
   },
   "bugs": {
     "url": "https://github.com/actions/setup-java/issues"
