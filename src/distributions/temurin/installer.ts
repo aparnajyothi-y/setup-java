@@ -77,27 +77,34 @@ export class TemurinDistribution extends JavaBase {
     core.info(
       `Downloading Java ${javaRelease.version} (${this.distribution}) from ${javaRelease.url} ...`
     );
-    let javaArchivePath = await tc.downloadTool(javaRelease.url);
 
-    core.info(`Extracting Java archive...`);
-    const extension = getDownloadArchiveExtension();
+    // Step 1: Download JDK archive
+    let javaArchivePath = await tc.downloadTool(javaRelease.url);
     if (process.platform === 'win32') {
       javaArchivePath = renameWinArchive(javaArchivePath);
     }
-    const extractedJavaPath = await extractJdkFile(javaArchivePath, extension);
 
-    const archiveName = fs.readdirSync(extractedJavaPath)[0];
-    const archivePath = path.join(extractedJavaPath, archiveName);
     const version = this.getToolcacheVersionName(javaRelease.version);
 
-    const javaPath = await tc.cacheDir(
-      archivePath,
+    // 🧩 Step 2: Cache the original tarball (not extracted dir)
+    const cachedArchive = await tc.cacheFile(
+      javaArchivePath,
+      path.basename(javaArchivePath),
       this.toolcacheFolderName,
       version,
       this.architecture
     );
 
-    return {version: javaRelease.version, path: javaPath};
+    core.info('Extracting Java archive from cached tarball...');
+    const extension = getDownloadArchiveExtension();
+
+    // Step 3: Always extract freshly from cached tarball
+    const extractedJavaPath = await extractJdkFile(cachedArchive, extension);
+    const archiveName = fs.readdirSync(extractedJavaPath)[0];
+    const archivePath = path.join(extractedJavaPath, archiveName);
+
+    // Step 4: Return the extracted path (no need to cacheDir again)
+    return {version: javaRelease.version, path: archivePath};
   }
 
   protected get toolcacheFolderName(): string {

@@ -131942,18 +131942,22 @@ class TemurinDistribution extends base_installer_1.JavaBase {
     downloadTool(javaRelease) {
         return __awaiter(this, void 0, void 0, function* () {
             core.info(`Downloading Java ${javaRelease.version} (${this.distribution}) from ${javaRelease.url} ...`);
+            // Step 1: Download JDK archive
             let javaArchivePath = yield tc.downloadTool(javaRelease.url);
-            core.info(`Extracting Java archive...`);
-            const extension = (0, util_1.getDownloadArchiveExtension)();
             if (process.platform === 'win32') {
                 javaArchivePath = (0, util_1.renameWinArchive)(javaArchivePath);
             }
-            const extractedJavaPath = yield (0, util_1.extractJdkFile)(javaArchivePath, extension);
+            const version = this.getToolcacheVersionName(javaRelease.version);
+            // 🧩 Step 2: Cache the original tarball (not extracted dir)
+            const cachedArchive = yield tc.cacheFile(javaArchivePath, path_1.default.basename(javaArchivePath), this.toolcacheFolderName, version, this.architecture);
+            core.info('Extracting Java archive from cached tarball...');
+            const extension = (0, util_1.getDownloadArchiveExtension)();
+            // Step 3: Always extract freshly from cached tarball
+            const extractedJavaPath = yield (0, util_1.extractJdkFile)(cachedArchive, extension);
             const archiveName = fs_1.default.readdirSync(extractedJavaPath)[0];
             const archivePath = path_1.default.join(extractedJavaPath, archiveName);
-            const version = this.getToolcacheVersionName(javaRelease.version);
-            const javaPath = yield tc.cacheDir(archivePath, this.toolcacheFolderName, version, this.architecture);
-            return { version: javaRelease.version, path: javaPath };
+            // Step 4: Return the extracted path (no need to cacheDir again)
+            return { version: javaRelease.version, path: archivePath };
         });
     }
     get toolcacheFolderName() {
