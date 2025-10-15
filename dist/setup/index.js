@@ -131949,11 +131949,12 @@ class TemurinDistribution extends base_installer_1.JavaBase {
             }
             const version = this.getToolcacheVersionName(javaRelease.version);
             // 🧩 Step 2: Cache the original tarball (not extracted dir)
-            const cachedArchive = yield tc.cacheFile(javaArchivePath, path_1.default.basename(javaArchivePath), this.toolcacheFolderName, version, this.architecture);
-            core.info('Extracting Java archive from cached tarball...');
+            const cachedArchiveDir = yield tc.cacheFile(javaArchivePath, path_1.default.basename(javaArchivePath), this.toolcacheFolderName, version, this.architecture);
+            const cachedArchivePath = path_1.default.join(cachedArchiveDir, path_1.default.basename(javaArchivePath));
+            core.info('Extracting Java archive freshly from cached tarball...');
             const extension = (0, util_1.getDownloadArchiveExtension)();
             // Step 3: Always extract freshly from cached tarball
-            const extractedJavaPath = yield (0, util_1.extractJdkFile)(cachedArchive, extension);
+            const extractedJavaPath = yield (0, util_1.extractJdkFile)(cachedArchivePath, extension);
             const archiveName = fs_1.default.readdirSync(extractedJavaPath)[0];
             const archivePath = path_1.default.join(extractedJavaPath, archiveName);
             // Step 4: Return the extracted path (no need to cacheDir again)
